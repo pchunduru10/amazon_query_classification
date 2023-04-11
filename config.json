@@ -1,0 +1,16 @@
+{
+"dataset_url" : "https://pre-post-purchase-questions.s3.amazonaws.com/PrePostQuestions.csv",
+"data_dir" : "data/",
+"output_dir": "output/",
+"feature_col" : "question",
+"target_col" : "label",
+"total_sample_size" : 25000,
+
+"max_features": 10000,
+"sequence_length":  50,
+"embedding_dim" : 16,
+"max_epochs" : 10,
+"batch_size" : 64,
+
+"checkpoint_name" : "text_model"
+}
