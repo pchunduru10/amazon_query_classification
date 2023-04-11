@@ -49,6 +49,10 @@ def load_data(
 ):
     """Loads data using keras utility from the provided training and test set
     directories. Assumes file format described in the documentation.
+    :param train_directory: path to train data
+    :param val_frac: split for validation from train data
+    :batch_size: batch size for training
+    :seed : seed
     """
     raw_train_ds = tf.keras.utils.text_dataset_from_directory(
         train_directory,
@@ -69,7 +73,11 @@ def load_data(
 
 
 def build_model(max_features: int, embedding_dim: int):
-    """Creates a simple Model object to be trained on the text dataset"""
+    """Creates a simple Model object to be trained on the text dataset.
+    :param max_features: maximum features to train on.
+    :param embedding_dim : cfg["embedding_dim"]
+
+    """
     model = tf.keras.Sequential(
         [
             layers.Embedding(max_features + 1, embedding_dim),
@@ -87,14 +95,14 @@ def build_model(max_features: int, embedding_dim: int):
 
 def train_model(
     cfg: dict,
-    train_dir: str,
-    max_features: int = 10_000,
-    sequence_length: int = 50,
-    embedding_dim: int = 16,
-    epochs: int = 7,
+    train_dir: str
     ):
     """Loads data and trains the simple classifier model.
-    Returns the text vectorizer, model object, test set, and label-name mapping
+    Returns the text vectorizer, model object, and label-name mapping
+    
+    :param cfg: config file.
+    :param train_dir: path to train data.    
+
     """
 
     # load data
@@ -107,9 +115,9 @@ def train_model(
     # create text vectorization layer
     vectorize_layer = layers.TextVectorization(
         standardize="lower",
-        max_tokens=max_features,
+        max_tokens=cfg["max_features"],
         output_mode="int",
-        output_sequence_length=sequence_length,
+        output_sequence_length= cfg["sequence_length"],
     )
 
     # adapt the layer to the input text
@@ -117,7 +125,7 @@ def train_model(
     vectorize_layer.adapt(train_text)
 
     # get the model (except the vectorizer and final sigmoid activation)
-    model = build_model(max_features, embedding_dim)
+    model = build_model(cfg["max_features"], cfg["embedding_dim"])
     model.compile(
         loss=losses.BinaryCrossentropy(from_logits=True),
         optimizer="adam",
@@ -132,10 +140,9 @@ def train_model(
     # prep datasets
     train_ds = raw_train_ds.map(vectorize_text).cache().prefetch(buffer_size=AUTOTUNE)
     val_ds = raw_val_ds.map(vectorize_text).cache().prefetch(buffer_size=AUTOTUNE)
-    # test_ds = raw_test_ds.map(vectorize_text).cache().prefetch(buffer_size=AUTOTUNE)
 
     # train model
-    history = model.fit(train_ds, validation_data=val_ds, epochs=epochs)
+    history = model.fit(train_ds, validation_data=val_ds, epochs= cfg["max_epochs"])
     save_output(data = history.history, 
                 filepath = cfg["output_dir"], 
                 filename = "train_history_dict" )
@@ -143,7 +150,12 @@ def train_model(
     return vectorize_layer, model, class_name_map
 
 
-def save_model(model: tf.keras.Model, output_dir: str):
+def save_model(model_object: tf.keras.Model, output_dir: str):
+    """Save the final model in the output path.
+
+    :param model_object: final model
+    :type model_object: tf.keras.Model
+    """
 
     # creat directory is not already exists
     Path(os.path.join(output_dir,"checkpoint")).mkdir(parents=True, exist_ok=True)
@@ -151,15 +163,15 @@ def save_model(model: tf.keras.Model, output_dir: str):
     # now = datetime.datetime.now()
     filename = "text_model" #now.strftime('model_%Y%m%d_%H%M%S')
     print(f"Saving the final model")
-    model.save(os.path.join(output_dir,"checkpoint",filename))
+    model_object.save(os.path.join(output_dir,"checkpoint",filename))
 
 
 
 def save_output(data: Any, filepath: str, filename: str = "train_history_dict"):
-    """_summary_
+    """Save output as pickle file in given location.
 
-    :param history_dict: _description_
-    :type history_dict: _type_
+    :param data: data to save (predictions or history)
+    :type data: Any
     """
     
     with open(os.path.join(filepath, f"{filename}.p"), 'wb') as file_pi:
@@ -167,25 +179,19 @@ def save_output(data: Any, filepath: str, filename: str = "train_history_dict"):
 
 
 def main(cfg: dict, train_dir: str):
-    """_summary_
+    """Main file to train the text classfication model.
 
-    :param train_dir: _description_
+    :param train_dir: path to train data
     :type train_dir: str
-    :param output_dir: _description_
-    :type output_dir: str
+    :param cfg: config file loaded
+    :type output_dir: python dictionary
     """
     # check for dir path and if not exists create
     Path(cfg["output_dir"]).mkdir(parents=True, exist_ok=True)
-
-
     
     # train the model on the data
     vectorize_layer, model, class_name_map = train_model(cfg=cfg,
-                                                        train_dir = train_dir,
-                                                        max_features = cfg["max_features"],
-                                                        sequence_length = cfg["sequence_length"],
-                                                        embedding_dim = cfg["embedding_dim"],
-                                                        epochs = cfg["max_epochs"])
+                                                        train_dir = train_dir)
 
     # TODO: save class name map as json file in the output_dir
     # class_name_map are dictionaries
@@ -209,6 +215,9 @@ def on_terminate(proc):
 
 
 if __name__ == "__main__":
+    """
+    Main script to execute.
+    """
     with open("config.json", "r") as c:
         config = json.load(c)
         print("Config read successful")
@@ -224,4 +233,3 @@ if __name__ == "__main__":
     main(config,
         train_dir = os.path.join(config["data_dir"],"training_data"))
     
-    debug =1
