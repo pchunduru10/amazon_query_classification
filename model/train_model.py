@@ -161,6 +161,7 @@ def save_output(data: Any, filepath: str, filename: str = "train_history_dict"):
     :param history_dict: _description_
     :type history_dict: _type_
     """
+    
     with open(os.path.join(filepath, f"{filename}.p"), 'wb') as file_pi:
         pickle.dump(data, file_pi)
 
@@ -173,6 +174,9 @@ def main(cfg: dict, train_dir: str):
     :param output_dir: _description_
     :type output_dir: str
     """
+    # check for dir path and if not exists create
+    Path(cfg["output_dir"]).mkdir(parents=True, exist_ok=True)
+
 
     
     # train the model on the data
@@ -185,8 +189,6 @@ def main(cfg: dict, train_dir: str):
 
     # TODO: save class name map as json file in the output_dir
     # class_name_map are dictionaries
-    # check for dir path and if not exists create
-    Path(cfg["output_dir"]).mkdir(parents=True, exist_ok=True)
     with open(os.path.join(cfg["output_dir"],'class_name_map.json'), 'w') as fp: 
         json.dump(class_name_map, fp)
 
@@ -221,3 +223,5 @@ if __name__ == "__main__":
     
     main(config,
         train_dir = os.path.join(config["data_dir"],"training_data"))
+    
+    debug =1

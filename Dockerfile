@@ -12,6 +12,9 @@ COPY requirements.txt .
 RUN python -m pip install --no-cache-dir -r requirements.txt
 
 WORKDIR /xoi
+
+COPY ./app ./app
+COPY config.json .
 COPY ./model ./model
 COPY run.sh .
 
@@ -22,4 +25,4 @@ COPY run.sh .
 
 # During debugging, this entry point will be overridden. For more information, please refer to https://aka.ms/vscode-docker-python-debug
 # CMD ["python", "./model/train_model.py"]
-CMD ["sh", "/run.sh"]
+CMD ["sh", "./run.sh"]

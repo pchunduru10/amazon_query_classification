@@ -6,8 +6,6 @@ import warnings
 warnings.filterwarnings('ignore') # setting ignore as a parameter
 
 
-
-# load the sentiment analysis model
 # @st.cache(allow_output_mutation=True)
 @st.cache_resource
 

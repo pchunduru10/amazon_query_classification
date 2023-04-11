@@ -14,3 +14,5 @@ Steps:
 
 NOTES
 `pip freeze | grep -v "@ file" > requirements.txt` to exlude certi related files
+
+# persona access token for github repo
