@@ -7,7 +7,7 @@ The aim of this project is to create a basic model pipeline which encompasses th
 1. Data Processing using raw csv.
 2. Train the ML-model - Binary classification model to predict whether the product based question was asked before or after the purchase.
 3. Batch inference on test data by loading the model.
-4. Create a strelamit app for user testing.
+4. Create a streamlit app for user testing.
 5. Build a custom docker image for the entire ML-model and App.
 
 A config.json is included that takes in all the parameters necessary to execute the model.
