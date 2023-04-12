@@ -51,8 +51,8 @@ Make the `run.sh` executable by running the coomand `chmod +x run.sh`  [ ALREADY
 `sudo docker run -it <image_name>`
 
 => To just run the app from the existing container, execute the following commands.
-`sudo docker start <container-id>`
-`sudo docker exec -it <container-id>  streamlit run app/app.py `
+- `sudo docker start <container-id>`
+- `sudo docker exec -it <container-id>  streamlit run app/app.py `
 
 *sudo* might be optional if you are not running as root.
 
