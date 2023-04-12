@@ -40,15 +40,19 @@ A requirements file is created to install the necessary dependencies
 Clone the repo (using HTTPS)/
 `git clone  https://github.com/pchunduru10/xoi_technical_challenge.git`
 
-Make the `run.sh` executable by running the coomand `chmod +x run.sh`  [ TODO : CAN BE ADDED IN DOCKERFILE]
+Make the `run.sh` executable by running the coomand `chmod +x run.sh`  [ ALREADY ADDED IN DOCKERFILE]
 
-Build the docker image using the following command
+=> Build the docker image using the following command
 
 `sudo docker build -t <image_name> -f Dockerfile .` 
 
-To create and run the docker container.
+=> To create and run the docker container.
 
-`sudo docker run -ti <image_name>`
+`sudo docker run -it <image_name>`
+
+=> To just run the app from the existing container, execute the following commands.
+`sudo docker start <container-id>`
+`sudo docker exec -it <container-id>  streamlit run app/app.py `
 
 *sudo* might be optional if you are not running as root.
 

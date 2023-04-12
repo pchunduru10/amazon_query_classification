@@ -37,7 +37,7 @@ if __name__ == '__main__':
                      whether the question was asked before or after the purchase of the product")
     st.sidebar.write("Dont worry if the model predicts wrong !!!. Its solely for demo purposes.")
 
-    st.title('XOI: Amazon Product Purchase Classification')
+    st.title('XOI: Amazon Product Query Classification')
     st.write('A simple text  analysis classification app')
     st.subheader('Input the Amazon Question below')
     sentence = st.text_area('Enter your question here',height=200)

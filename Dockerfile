@@ -19,4 +19,5 @@ COPY ./model ./model
 COPY run.sh .
 
 # CMD ["python", "./model/train_model.py"]
+RUN /bin/bash -c 'chmod +x run.sh'
 CMD ["sh", "./run.sh"]
