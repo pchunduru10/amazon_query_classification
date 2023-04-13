@@ -35,8 +35,9 @@ A requirements file is created to install the necessary dependencies
 
 **Clone the Repo** - Since this is a private repo, Github may ask you to create Personal Access Token to clone the repo. Make sure you are familiar with and already have setup shh keys and personal access token before starting.
 
-Clone the repo (using HTTPS)/
-`git clone  https://github.com/pchunduru10/xoi_technical_challenge.git`
+Clone the repo (using HTTPS)
+
+`git clone https://github.com/pchunduru10/amazon_query_classification.git`
 
 Make the `run.sh` executable by running the coomand `chmod +x run.sh`  [ ALREADY ADDED IN DOCKERFILE]
 
