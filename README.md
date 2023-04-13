@@ -1,6 +1,4 @@
-# XOI Technical Challenge
-![alt text](https://xoi.io/wp-content/uploads/2023/01/XOi_Logo.svg)
-
+# Amazon Product Query Classification
 ## Overview
 The aim of this project is to create a basic model pipeline which encompasses the key components of a machine learning framework. The process involves importing and transforming the raw data to make it compatible with a machine learning model, training a text classification model using the processed data, and saving the final model. To enhance user experience and facilitate the deployment of the ML model, a user-friendly application will also be developed.
 
